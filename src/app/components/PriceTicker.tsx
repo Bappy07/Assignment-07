@@ -1,4 +1,4 @@
-
+import { connection } from "next/server";
 import { getProducts } from "@/app/lib/api";
 
 type Product = {
@@ -7,13 +7,15 @@ type Product = {
   today: number;
   yesterday: number;
   unit: string;
-  change: {
+  change?: {
     dir: string;
     pct: number;
   };
 };
 
 export default async function PriceTicker() {
+  await connection();
+
   let products: Product[] = [];
 
   try {
@@ -56,8 +58,8 @@ export default async function PriceTicker() {
                     : "text-gray-500"
               }
             >
-              {product.change?.dir === "up" ? "▲" : "▼"}{" "}
-              {product.change?.pct}%
+              {product.change?.dir === "up" ? "▲" : product.change?.dir === "down" ? "▼" : "—"}{" "}
+              {product.change?.pct ?? 0}%
             </span>
           </div>
         ))}
