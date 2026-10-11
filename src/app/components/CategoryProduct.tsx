@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 type Product = {
@@ -60,11 +61,13 @@ export default function CategoryProducts({
         <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {sortedProducts.map((product) => {
             const isUp = product.change?.dir === "up";
+            const isDown = product.change?.dir === "down";
 
             return (
-              <article
+              <Link
                 key={product.id}
-                className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+                href={`/product/${product.slug}`}
+                className="block rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
               >
                 <div className="flex h-32 items-center justify-center rounded-xl bg-emerald-50 text-5xl">
                   {product.image ?? product.categoryIcon ?? "🛒"}
@@ -95,12 +98,12 @@ export default function CategoryProducts({
                       className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
                         isUp
                           ? "bg-red-50 text-red-600"
-                          : product.change.dir === "down"
-                            ? "bg-emerald-50 text-emerald-200"
+                          : isDown
+                            ? "bg-emerald-50 text-emerald-700"
                             : "bg-gray-100 text-gray-600"
                       }`}
                     >
-                      {isUp ? "▲" : product.change.dir === "down" ? "▼" : "—"}{" "}
+                      {isUp ? "▲" : isDown ? "▼" : "—"}{" "}
                       {product.change.pct.toLocaleString("bn-BD")}%
                     </span>
                   )}
@@ -111,7 +114,11 @@ export default function CategoryProducts({
                     গতকাল: ৳{product.yesterday.toLocaleString("bn-BD")}
                   </p>
                 )}
-              </article>
+
+                <p className="mt-4 text-sm font-semibold text-emerald-700">
+                  বিস্তারিত দেখুন →
+                </p>
+              </Link>
             );
           })}
         </div>
