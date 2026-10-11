@@ -3,9 +3,9 @@ process.loadEnvFile(".env.local");
 const { MongoClient } = require("mongodb");
 
 async function testConnection() {
- const client = new MongoClient(process.env.DATABASE_URL, {
-  serverSelectionTimeoutMS: 10000,
-  tls: true,
+const client = new MongoClient(process.env.DATABASE_URL, {
+  serverSelectionTimeoutMS: 15000,
+  connectTimeoutMS: 15000,
 });
 
   try {
